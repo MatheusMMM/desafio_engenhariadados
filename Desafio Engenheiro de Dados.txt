@@ -1,0 +1,29 @@
+Qual o objetivo do comando cache em Spark?
+R: É um comando nativo do Spark que armazena em cache resultados intermediários.
+
+O mesmo código implementado em Spark é normalmente mais rápido que a implementação equivalente em
+MapReduce. Por quê?
+R: Pois, em Spark é feito tudo em memória, enquanto o MapReduce é feito em disco, aumentando muito o tempo de processamento.
+
+Qual é a função do SparkContext ?
+R: O SparkContext serve para estabelecer acesso ao Cluster Spark com ajuda do YARN/Mesos.
+
+Explique com suas palavras o que é Resilient Distributed Datasets (RDD).
+R: É o core do Spark, são coleções distribuidas em uma ou mais partições.
+
+GroupByKey é menos eficiente que reduceByKey em grandes dataset. Por quê?
+R:Pois em grandes volumes de dados ao usar o groupByKey os dados são 'embaralhados' em chave - valor e ao 'combinar' a lista de valores, se for enorme, irá ocupar uma partição inteira causando problemas.
+Já ao usar o reduce, os valores de cada chave são agregados usando a função de redução e também não há a mistura de dados no inicio.
+
+
+val textFile = sc . textFile ( "hdfs://..." )
+val counts = textFile . flatMap ( line => line . split ( " " ))
+. map ( word => ( word , 1 ))
+. reduceByKey ( _ + _ )
+counts . saveAsTextFile ( "hdfs://..." )
+
+R: 1) Lê o arquivo no HDFS.
+   2) Faz um split linha a linha sempre que achar um espaço.
+   3) Transforma o RDD de palavras em uma tupla com o número de ocorrencias.ex: (palavra, <número de ocorrencias>)
+   4) O reduce leva dois valores para gerar um outro. ex: x+y = Resultado.
+   5) Salva o textfile de volta no HDFS.
